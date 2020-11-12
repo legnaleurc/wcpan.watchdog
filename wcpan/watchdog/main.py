@@ -1,6 +1,5 @@
 import asyncio as aio
 import argparse
-import functools
 import signal
 import sys
 

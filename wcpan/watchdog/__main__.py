@@ -1,8 +1,8 @@
-import asyncio as aio
+import asyncio
 import sys
 
 from .main import main
 
 rv = main()
-rv = aio.run(rv)
+rv = asyncio.run(rv)
 sys.exit(rv)

@@ -1,8 +1,8 @@
-import asyncio as aio
-import concurrent.futures as cf
-import contextlib as cl
-import functools as ft
+import asyncio
 import time
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import AsyncExitStack
+from functools import partial
 
 from .walker import Walker
 from .filters import create_default_filter
@@ -37,12 +37,12 @@ class Watcher(object):
         self._executor = executor
         self._loop = loop
         if not self._loop:
-            self._loop = aio.get_running_loop()
+            self._loop = asyncio.get_running_loop()
 
     async def __aenter__(self):
-        async with cl.AsyncExitStack() as stack:
+        async with AsyncExitStack() as stack:
             if self._executor is None:
-                self._executor = stack.enter_context(cf.ThreadPoolExecutor())
+                self._executor = stack.enter_context(ThreadPoolExecutor())
             self._raii = stack.pop_all()
         return WatcherCreator(self)
 
@@ -50,11 +50,11 @@ class Watcher(object):
         await self._raii.aclose()
 
     async def _run(self, cb, *args, **kwargs):
-        fn = ft.partial(cb, *args, **kwargs)
+        fn = partial(cb, *args, **kwargs)
         return await self._loop.run_in_executor(self._executor, fn)
 
     async def _sleep(self, sec):
-        await aio.sleep(sec, loop=self._loop)
+        await asyncio.sleep(sec, loop=self._loop)
 
 
 class WatcherCreator(object):

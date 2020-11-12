@@ -1,6 +1,6 @@
 import enum
 import os
-from typing import Dict, Pattern, Set, Tuple, Union
+from typing import Dict, Set, Tuple
 
 from .filters import Filter
 
