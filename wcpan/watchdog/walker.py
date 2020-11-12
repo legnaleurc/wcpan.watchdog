@@ -14,13 +14,13 @@ class Change(enum.IntEnum):
 
 ChangeEntry = Tuple[Change, str]
 ChangeSet = Set[ChangeEntry]
-Snapshot = Dict[str, int]
+Snapshot = Dict[str, float]
 
 
 class Walker(object):
 
     def __init__(self, filter_: Filter, root_path: str):
-        self._files = {}
+        self._files: Snapshot = {}
         self._filter = filter_
         self._root_path = root_path
 
@@ -47,8 +47,8 @@ class Walker(object):
                     changes.add((Change.modified, entry.path))
 
     def __call__(self) -> ChangeSet:
-        changes = set()
-        new_files = {}
+        changes: Set[ChangeEntry] = set()
+        new_files: Snapshot = {}
         try:
             self._walk(str(self._root_path), changes, new_files)
         except OSError as e:
@@ -58,7 +58,10 @@ class Walker(object):
         # look for deleted
         deleted = self._files.keys() - new_files.keys()
         if deleted:
-            changes |= {(Change.deleted, path) for path in deleted}
+            deleted_set: Set[ChangeEntry] = {
+                (Change.deleted, path) for path in deleted
+            }
+            changes |= deleted_set
 
         self._files = new_files
         return changes
