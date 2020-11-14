@@ -23,8 +23,6 @@ async def main(args: List[str] = None):
                WatcherContext() as watcher:
         async for changes in watcher(kwargs.path, stop_event=stop_event,
                                      filter_=filter_):
-            print(changes)
-
             await child.restart()
 
     return 0
