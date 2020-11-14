@@ -4,7 +4,7 @@ import signal
 import sys
 from typing import List, Union
 
-from .watcher import Watcher
+from .watcher import WatcherContext
 from .filters import create_default_filter, matches_glob
 
 
@@ -20,7 +20,7 @@ async def main(args: List[str] = None):
     loop.add_signal_handler(signal.SIGINT, lambda: stop_event.set())
 
     async with ChildProcess(rest) as child, \
-               Watcher() as watcher:
+               WatcherContext() as watcher:
         async for changes in watcher(kwargs.path, stop_event=stop_event,
                                      filter_=filter_):
             print(changes)
