@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+
+__all__ = ('WatcherContext', 'Watcher')
+
+
 import asyncio
 import time
 from concurrent.futures import Executor, ThreadPoolExecutor

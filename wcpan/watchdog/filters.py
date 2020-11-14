@@ -1,3 +1,10 @@
+__all__ = (
+    'Filter', 'FilterFunction', 'create_default_filter', 'file_only',
+    'folder_only', 'is_python_cache', 'is_editor_file', 'is_vcs_folder',
+    'is_nodejs_cache', 'matches_glob', 'matches_regex',
+)
+
+
 import pathlib
 import functools
 import os

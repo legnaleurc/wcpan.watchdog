@@ -1,3 +1,6 @@
+__all__ = ('Change', 'ChangeEntry', 'ChangeSet', 'Walker')
+
+
 import enum
 import os
 from typing import Dict, Set, Tuple
