@@ -24,15 +24,25 @@ class Runner(Protocol):
 
 
 class WatcherContext(object):
-    """
-    Creates a filesystem watcher.
+    """Context manager of watchers.
+
+    This class maintains the context needed by watchers, especially executor.
+    Parameters will be used as default values for each watchers.
 
     stop_event is an asyncio.Event object which gives the watcher a hint about
-    when to stop the watching loop. If stop_event is None, the loop will not
+    when to stop the watching loop. If stop_event is None, the loop will NEVER
     stop.
 
     filter_ is a Filter object, to filter out files and directories being
-    watching. If filter_ is None, create_default_filter() will be used.
+    watching. If omitted, create_default_filter() will be used.
+
+    sleep_sec is the time in second to wait for new changes coming.
+    min_sleep_sec is the minimum time in second to wait for new changes coming.
+    debounce_sec is the maximum time to collect changes.
+
+    executor is an Executor object, used to walk through the file system. If
+    omitted, a ThreadPoolExecutor will be used. If you supplied an Executor,
+    then it is caller's responsibility to stop the Executor.
     """
 
     def __init__(self,
