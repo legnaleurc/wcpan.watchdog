@@ -53,7 +53,7 @@ class Walker(object):
         changes: Set[ChangeEntry] = set()
         new_files: Snapshot = {}
         try:
-            self._walk(str(self._root_path), changes, new_files)
+            self._walk(self._root_path, changes, new_files)
         except OSError as e:
             # happens when a directory has been deleted between checks
             print(f'error walking file system: {e.__class__.__name__} {e}')

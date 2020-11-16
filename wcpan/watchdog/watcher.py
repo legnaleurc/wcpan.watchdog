@@ -5,6 +5,7 @@ __all__ = ('WatcherContext', 'Watcher')
 
 
 import asyncio
+import os
 import time
 from concurrent.futures import Executor, ThreadPoolExecutor
 from contextlib import AsyncExitStack
@@ -86,7 +87,7 @@ class Watcher(object):
         self._context = context
 
     def __call__(self,
-        path: str,
+        path: Union[os.PathLike, str],
         *,
         stop_event: Optional[asyncio.Event] = None,
         filter_: Optional[Filter] = None,
@@ -94,6 +95,8 @@ class Watcher(object):
         min_sleep_sec: Optional[float] = None,
         debounce_sec: Optional[float] = None,
     ) -> ChangeIterator:
+        if not isinstance(path, str):
+            path = str(path)
         if stop_event is None:
             stop_event = self._context._stop_event
         if filter_ is None:
