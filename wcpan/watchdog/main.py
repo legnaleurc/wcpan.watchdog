@@ -14,6 +14,7 @@ async def main(args: List[str] = None):
 
     kwargs, rest = parse_args(args)
     filter_ = create_filter(kwargs)
+    is_quiet = kwargs.quiet
 
     loop = asyncio.get_running_loop()
     stop_event = asyncio.Event()
@@ -23,6 +24,8 @@ async def main(args: List[str] = None):
                WatcherContext() as watcher:
         async for changes in watcher(kwargs.path, stop_event=stop_event,
                                      filter_=filter_):
+            if not is_quiet:
+                sys.stderr.write(f'{str(changes)}\n')
             await child.restart()
 
     return 0
@@ -31,6 +34,7 @@ async def main(args: List[str] = None):
 def parse_args(args: List[str]):
     parser = argparse.ArgumentParser('wcpan.watchdog')
 
+    parser.add_argument('--quiet', '-q', action='store_true', default=False)
     parser.add_argument('--include', '-i', action='append')
     parser.add_argument('--exclude', '-e', action='append')
     parser.add_argument('path', nargs='?', type=str, default='.')
