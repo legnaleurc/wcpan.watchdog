@@ -3,7 +3,7 @@ __all__ = ('Change', 'ChangeEntry', 'ChangeSet', 'Walker')
 
 import enum
 import os
-from typing import Dict, Set, Tuple
+from typing import TypeAlias
 
 from .filters import Filter
 
@@ -15,9 +15,9 @@ class Change(enum.IntEnum):
     deleted = 3
 
 
-ChangeEntry = Tuple[Change, str]
-ChangeSet = Set[ChangeEntry]
-Snapshot = Dict[str, float]
+ChangeEntry: TypeAlias = tuple[Change, str]
+ChangeSet: TypeAlias = set[ChangeEntry]
+Snapshot: TypeAlias = dict[str, float]
 
 
 class Walker(object):
@@ -50,7 +50,7 @@ class Walker(object):
                     changes.add((Change.modified, entry.path))
 
     def __call__(self) -> ChangeSet:
-        changes: Set[ChangeEntry] = set()
+        changes: set[ChangeEntry] = set()
         new_files: Snapshot = {}
         try:
             self._walk(self._root_path, changes, new_files)
@@ -61,7 +61,7 @@ class Walker(object):
         # look for deleted
         deleted = self._files.keys() - new_files.keys()
         if deleted:
-            deleted_set: Set[ChangeEntry] = {
+            deleted_set: set[ChangeEntry] = {
                 (Change.deleted, path) for path in deleted
             }
             changes |= deleted_set

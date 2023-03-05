@@ -2,13 +2,12 @@ import asyncio
 import argparse
 import signal
 import sys
-from typing import List
 
 from .watcher import WatcherContext
 from .filters import create_default_filter, matches_glob
 
 
-async def main(args: List[str] | None = None):
+async def main(args: list[str] | None = None):
     if args is None:
         args = sys.argv[1:]
 
@@ -31,7 +30,7 @@ async def main(args: List[str] | None = None):
     return 0
 
 
-def parse_args(args: List[str]):
+def parse_args(args: list[str]):
     parser = argparse.ArgumentParser('wcpan.watchdog')
 
     parser.add_argument('--quiet', '-q', action='store_true', default=False)
@@ -39,7 +38,7 @@ def parse_args(args: List[str]):
     parser.add_argument('--exclude', '-e', action='append')
     parser.add_argument('path', nargs='?', type=str, default='.')
 
-    rest: List[str] = []
+    rest: list[str] = []
     try:
         i = args.index('--')
         rest = args[i+1:]
@@ -64,7 +63,7 @@ def create_filter(kwargs: argparse.Namespace):
 
 class ChildProcess(object):
 
-    def __init__(self, args: List[str]):
+    def __init__(self, args: list[str]):
         self._args = args
         self._p: asyncio.subprocess.Process | None = None
 
@@ -86,7 +85,7 @@ class ChildProcess(object):
         self._p = await spawn(self._args)
 
 
-async def spawn(args: List[str]):
+async def spawn(args: list[str]):
     p = await asyncio.create_subprocess_exec(*args)
     return p
 

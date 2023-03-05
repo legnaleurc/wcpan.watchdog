@@ -9,7 +9,7 @@ import pathlib
 import functools
 import os
 import re
-from typing import Callable, Text
+from typing import Callable
 
 
 FilterFunction = Callable[[os.DirEntry], bool]
@@ -102,18 +102,18 @@ def is_python_file(entry: os.DirEntry) -> bool:
     return entry.name.endswith(('.py', '.pyx', '.pyd'))
 
 
-def matches_glob(pattern: Text) -> FilterFunction:
+def matches_glob(pattern: str) -> FilterFunction:
     matcher = GlobPathMatcher(pattern)
     return lambda entry: matcher(entry)
 
 
-def matches_regex(pattern: Text) -> FilterFunction:
+def matches_regex(pattern: str) -> FilterFunction:
     return lambda entry: re.search(pattern, entry.name) is not None
 
 
 class GlobPathMatcher(object):
 
-    def __init__(self, pattern: Text):
+    def __init__(self, pattern: str):
         parts = pathlib.PurePath(pattern).parts
         self._parts = [re.compile(glob_to_regex(_)) for _ in parts]
 
@@ -128,5 +128,5 @@ class GlobPathMatcher(object):
 
 
 # TODO Windows
-def glob_to_regex(glob: Text) -> Text:
+def glob_to_regex(glob: str) -> str:
     return glob.replace('*', r'([^/]*)')

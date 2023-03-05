@@ -10,7 +10,7 @@ import time
 from concurrent.futures import Executor, ThreadPoolExecutor
 from contextlib import AsyncExitStack
 from functools import partial
-from typing import Awaitable, Callable, Protocol, Set, TypeVar
+from typing import Awaitable, Callable, Protocol, TypeVar
 
 from .walker import ChangeEntry, Walker
 from .filters import Filter, create_default_filter
@@ -146,14 +146,14 @@ class ChangeIterator(object):
     def __aiter__(self):
         return self
 
-    async def __anext__(self) -> Set[ChangeEntry]:
+    async def __anext__(self) -> set[ChangeEntry]:
         # Setup the waler, and run it to setup the snapshot.
         if not self._walker:
             self._walker = Walker(self._filter, self._path)
             await self._run(self._walker)
 
         # Changes gathered in this iteration.
-        changes: Set[ChangeEntry] = set()
+        changes: set[ChangeEntry] = set()
         # The time interval the walker used.
         last_check_took = 0.0
         # The timestamp where the changes begin. Used to calculate debouncing.
