@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "wcpan-watchdog"
+name = "wcpan.watchdog"
 version = "1.2.0"
 description = "asynchronous watchdog"
 authors = ["Wei-Cheng Pan <legnaleurc@gmail.com>"]
