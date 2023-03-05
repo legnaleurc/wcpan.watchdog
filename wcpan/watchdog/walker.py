@@ -1,4 +1,4 @@
-__all__ = ('Change', 'ChangeEntry', 'ChangeSet', 'Walker')
+__all__ = ("Change", "ChangeEntry", "ChangeSet", "Walker")
 
 
 import enum
@@ -9,7 +9,6 @@ from .filters import Filter
 
 
 class Change(enum.IntEnum):
-
     added = 1
     modified = 2
     deleted = 3
@@ -21,13 +20,13 @@ Snapshot: TypeAlias = dict[str, float]
 
 
 class Walker(object):
-
     def __init__(self, filter_: Filter, root_path: str):
         self._files: Snapshot = {}
         self._filter = filter_
         self._root_path = root_path
 
-    def _walk(self,
+    def _walk(
+        self,
         dir_path: str,
         changes: ChangeSet,
         new_files: Snapshot,
@@ -56,16 +55,13 @@ class Walker(object):
             self._walk(self._root_path, changes, new_files)
         except OSError as e:
             # happens when a directory has been deleted between checks
-            print(f'error walking file system: {e.__class__.__name__} {e}')
+            print(f"error walking file system: {e.__class__.__name__} {e}")
 
         # look for deleted
         deleted = self._files.keys() - new_files.keys()
         if deleted:
-            deleted_set: set[ChangeEntry] = {
-                (Change.deleted, path) for path in deleted
-            }
+            deleted_set: set[ChangeEntry] = {(Change.deleted, path) for path in deleted}
             changes |= deleted_set
 
         self._files = new_files
         return changes
-

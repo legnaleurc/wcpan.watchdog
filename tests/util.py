@@ -16,7 +16,7 @@ def create_entry(path: Text, is_dir: bool) -> os.DirEntry:
 
 @contextlib.contextmanager
 def create_dir_entry(path: Text) -> Iterator[os.DirEntry]:
-    with utm.patch('pathlib.Path') as FakePath:
+    with utm.patch("pathlib.Path") as FakePath:
         fake_path = FakePath.return_value
         fake_path.parts = pathlib.PurePath(path).parts
         fake_path.is_dir.return_value = True
@@ -25,7 +25,7 @@ def create_dir_entry(path: Text) -> Iterator[os.DirEntry]:
 
 @contextlib.contextmanager
 def create_file_entry(path: Text) -> Iterator[os.DirEntry]:
-    with utm.patch('pathlib.Path') as FakePath:
+    with utm.patch("pathlib.Path") as FakePath:
         fake_path = FakePath.return_value
         fake_path.parts = pathlib.PurePath(path).parts
         fake_path.is_dir.return_value = False

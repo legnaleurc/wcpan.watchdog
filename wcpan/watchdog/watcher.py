@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-__all__ = ('WatcherContext', 'Watcher')
+__all__ = ("WatcherContext", "Watcher")
 
 
 import asyncio
@@ -16,7 +16,7 @@ from .walker import ChangeEntry, Walker
 from .filters import Filter, create_default_filter
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class Runner(Protocol[T]):
@@ -46,7 +46,8 @@ class WatcherContext(object):
     then it is caller's responsibility to stop the Executor.
     """
 
-    def __init__(self,
+    def __init__(
+        self,
         *,
         stop_event: asyncio.Event | None = None,
         filter_: Filter | None = None,
@@ -82,11 +83,11 @@ class WatcherContext(object):
 
 
 class Watcher(object):
-
     def __init__(self, context: WatcherContext) -> None:
         self._context = context
 
-    def __call__(self,
+    def __call__(
+        self,
         path: os.PathLike | str,
         *,
         stop_event: asyncio.Event | None = None,
@@ -121,8 +122,8 @@ class Watcher(object):
 
 
 class ChangeIterator(object):
-
-    def __init__(self,
+    def __init__(
+        self,
         *,
         run: Runner,
         sleep: Callable[[float], Awaitable[None]],

@@ -19,29 +19,29 @@ async def main(args: list[str] | None = None):
     stop_event = asyncio.Event()
     loop.add_signal_handler(signal.SIGINT, lambda: stop_event.set())
 
-    async with ChildProcess(rest) as child, \
-               WatcherContext() as watcher:
-        async for changes in watcher(kwargs.path, stop_event=stop_event,
-                                     filter_=filter_):
+    async with ChildProcess(rest) as child, WatcherContext() as watcher:
+        async for changes in watcher(
+            kwargs.path, stop_event=stop_event, filter_=filter_
+        ):
             if not is_quiet:
-                sys.stderr.write(f'{str(changes)}\n')
+                sys.stderr.write(f"{str(changes)}\n")
             await child.restart()
 
     return 0
 
 
 def parse_args(args: list[str]):
-    parser = argparse.ArgumentParser('wcpan.watchdog')
+    parser = argparse.ArgumentParser("wcpan.watchdog")
 
-    parser.add_argument('--quiet', '-q', action='store_true', default=False)
-    parser.add_argument('--include', '-i', action='append')
-    parser.add_argument('--exclude', '-e', action='append')
-    parser.add_argument('path', nargs='?', type=str, default='.')
+    parser.add_argument("--quiet", "-q", action="store_true", default=False)
+    parser.add_argument("--include", "-i", action="append")
+    parser.add_argument("--exclude", "-e", action="append")
+    parser.add_argument("path", nargs="?", type=str, default=".")
 
     rest: list[str] = []
     try:
-        i = args.index('--')
-        rest = args[i+1:]
+        i = args.index("--")
+        rest = args[i + 1 :]
         args = args[:i]
         kwargs = parser.parse_args(args)
     except ValueError:
@@ -62,7 +62,6 @@ def create_filter(kwargs: argparse.Namespace):
 
 
 class ChildProcess(object):
-
     def __init__(self, args: list[str]):
         self._args = args
         self._p: asyncio.subprocess.Process | None = None

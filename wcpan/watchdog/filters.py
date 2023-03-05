@@ -1,7 +1,15 @@
 __all__ = (
-    'Filter', 'FilterFunction', 'create_default_filter', 'file_only',
-    'folder_only', 'is_python_cache', 'is_editor_file', 'is_vcs_folder',
-    'is_nodejs_cache', 'matches_glob', 'matches_regex',
+    "Filter",
+    "FilterFunction",
+    "create_default_filter",
+    "file_only",
+    "folder_only",
+    "is_python_cache",
+    "is_editor_file",
+    "is_vcs_folder",
+    "is_nodejs_cache",
+    "matches_glob",
+    "matches_regex",
 )
 
 
@@ -16,7 +24,6 @@ FilterFunction = Callable[[os.DirEntry], bool]
 
 
 class Filter(object):
-
     def __init__(self):
         self._include_list = []
         self._exclude_list = []
@@ -55,6 +62,7 @@ def file_only(fn):
         if entry.is_dir():
             return False
         return fn(entry, *args, **kwargs)
+
     return wrapper
 
 
@@ -64,19 +72,20 @@ def folder_only(fn):
         if not entry.is_dir():
             return False
         return fn(entry, *args, **kwargs)
+
     return wrapper
 
 
 def is_python_cache(entry: os.DirEntry) -> bool:
     if entry.is_dir():
-        return entry.name in ('__pycache__', 'site-packages')
+        return entry.name in ("__pycache__", "site-packages")
     else:
-        return re.search(r'\.py[cod]$', entry.name) is not None
+        return re.search(r"\.py[cod]$", entry.name) is not None
 
 
 def is_editor_file(entry: os.DirEntry) -> bool:
-    FOLDER_PATTERNS = ('.idea', '.vscode')
-    FILE_PATTERNS = (r'\.sw.$', r'~$')
+    FOLDER_PATTERNS = (".idea", ".vscode")
+    FILE_PATTERNS = (r"\.sw.$", r"~$")
 
     if entry.is_dir():
         g = (_ == entry.name for _ in FOLDER_PATTERNS)
@@ -87,19 +96,19 @@ def is_editor_file(entry: os.DirEntry) -> bool:
 
 @folder_only
 def is_vcs_folder(entry: os.DirEntry) -> bool:
-    PATTERNS = ('.git', '.hg', '.svn', '.cvs')
+    PATTERNS = (".git", ".hg", ".svn", ".cvs")
     g = (_ == entry.name for _ in PATTERNS)
     return any(g)
 
 
 @folder_only
 def is_nodejs_cache(entry: os.DirEntry) -> bool:
-    return entry.name == 'node_modules'
+    return entry.name == "node_modules"
 
 
 @file_only
 def is_python_file(entry: os.DirEntry) -> bool:
-    return entry.name.endswith(('.py', '.pyx', '.pyd'))
+    return entry.name.endswith((".py", ".pyx", ".pyd"))
 
 
 def matches_glob(pattern: str) -> FilterFunction:
@@ -112,7 +121,6 @@ def matches_regex(pattern: str) -> FilterFunction:
 
 
 class GlobPathMatcher(object):
-
     def __init__(self, pattern: str):
         parts = pathlib.PurePath(pattern).parts
         self._parts = [re.compile(glob_to_regex(_)) for _ in parts]
@@ -129,4 +137,4 @@ class GlobPathMatcher(object):
 
 # TODO Windows
 def glob_to_regex(glob: str) -> str:
-    return glob.replace('*', r'([^/]*)')
+    return glob.replace("*", r"([^/]*)")
