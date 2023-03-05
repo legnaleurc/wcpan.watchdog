@@ -2,13 +2,13 @@ import asyncio
 import argparse
 import signal
 import sys
-from typing import List, Union
+from typing import List
 
 from .watcher import WatcherContext
 from .filters import create_default_filter, matches_glob
 
 
-async def main(args: List[str] = None):
+async def main(args: List[str] | None = None):
     if args is None:
         args = sys.argv[1:]
 
@@ -66,7 +66,7 @@ class ChildProcess(object):
 
     def __init__(self, args: List[str]):
         self._args = args
-        self._p: Union[asyncio.subprocess.Process, None] = None
+        self._p: asyncio.subprocess.Process | None = None
 
     async def __aenter__(self):
         if not self._args:

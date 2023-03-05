@@ -10,7 +10,7 @@ import time
 from concurrent.futures import Executor, ThreadPoolExecutor
 from contextlib import AsyncExitStack
 from functools import partial
-from typing import Awaitable, Callable, Protocol, Set, TypeVar, Union
+from typing import Awaitable, Callable, Protocol, Set, TypeVar
 
 from .walker import ChangeEntry, Walker
 from .filters import Filter, create_default_filter
@@ -87,7 +87,7 @@ class Watcher(object):
         self._context = context
 
     def __call__(self,
-        path: Union[os.PathLike, str],
+        path: os.PathLike | str,
         *,
         stop_event: asyncio.Event | None = None,
         filter_: Filter | None = None,
@@ -141,7 +141,7 @@ class ChangeIterator(object):
         self._sleep_sec = sleep_sec
         self._min_sleep_sec = min_sleep_sec
         self._debounce_sec = debounce_sec
-        self._walker: Union[Walker, None] = None
+        self._walker: Walker | None = None
 
     def __aiter__(self):
         return self
