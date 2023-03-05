@@ -19,9 +19,9 @@ from .filters import Filter, create_default_filter
 T = TypeVar('T')
 
 
-class Runner(Protocol):
+class Runner(Protocol[T]):
     async def __call__(self, cb: Callable[..., T], *args, **kwargs) -> T:
-        pass
+        ...
 
 
 class WatcherContext(object):
@@ -72,7 +72,7 @@ class WatcherContext(object):
     async def __aexit__(self, type_, exc, tb):
         await self._raii.aclose()
 
-    async def _run(self, cb: Callable[..., T], *args, **kwargs):
+    async def _run(self, cb: Callable[..., T], *args, **kwargs) -> T:
         fn = partial(cb, *args, **kwargs)
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(self._executor, fn)
