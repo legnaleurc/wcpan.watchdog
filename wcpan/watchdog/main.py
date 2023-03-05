@@ -7,7 +7,11 @@ from .watcher import WatcherContext
 from .filters import create_default_filter, matches_glob
 
 
-async def main(args: list[str] | None = None):
+def main(args: list[str] | None = None) -> int:
+    return asyncio.run(amain(args))
+
+
+async def amain(args: list[str] | None = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
