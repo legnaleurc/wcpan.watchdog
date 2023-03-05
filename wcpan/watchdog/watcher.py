@@ -10,7 +10,7 @@ import time
 from concurrent.futures import Executor, ThreadPoolExecutor
 from contextlib import AsyncExitStack
 from functools import partial
-from typing import Awaitable, Callable, Optional, Protocol, Set, TypeVar, Union
+from typing import Awaitable, Callable, Protocol, Set, TypeVar, Union
 
 from .walker import ChangeEntry, Walker
 from .filters import Filter, create_default_filter
@@ -48,12 +48,12 @@ class WatcherContext(object):
 
     def __init__(self,
         *,
-        stop_event: Optional[asyncio.Event] = None,
-        filter_: Optional[Filter] = None,
+        stop_event: asyncio.Event | None = None,
+        filter_: Filter | None = None,
         sleep_sec: float = 0.4,
         min_sleep_sec: float = 0.05,
         debounce_sec: float = 1.6,
-        executor: Optional[Executor] = None,
+        executor: Executor | None = None,
     ):
         self._stop_event = stop_event
         self._filter = filter_
@@ -89,11 +89,11 @@ class Watcher(object):
     def __call__(self,
         path: Union[os.PathLike, str],
         *,
-        stop_event: Optional[asyncio.Event] = None,
-        filter_: Optional[Filter] = None,
-        sleep_sec: Optional[float] = None,
-        min_sleep_sec: Optional[float] = None,
-        debounce_sec: Optional[float] = None,
+        stop_event: asyncio.Event | None = None,
+        filter_: Filter | None = None,
+        sleep_sec: float | None = None,
+        min_sleep_sec: float | None = None,
+        debounce_sec: float | None = None,
     ) -> ChangeIterator:
         if not isinstance(path, str):
             path = str(path)
@@ -127,7 +127,7 @@ class ChangeIterator(object):
         run: Runner,
         sleep: Callable[[float], Awaitable[None]],
         path: str,
-        stop_event: Optional[asyncio.Event],
+        stop_event: asyncio.Event | None,
         filter_: Filter,
         sleep_sec: float,
         min_sleep_sec: float,
