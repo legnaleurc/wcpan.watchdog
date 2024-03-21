@@ -20,8 +20,7 @@ T = TypeVar("T")
 
 
 class Runner(Protocol[T]):
-    async def __call__(self, cb: Callable[..., T], *args, **kwargs) -> T:
-        ...
+    async def __call__(self, cb: Callable[..., T], *args, **kwargs) -> T: ...
 
 
 class WatcherContext(object):
