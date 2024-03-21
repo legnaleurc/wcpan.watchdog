@@ -17,7 +17,7 @@ classifiers = [
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.1.0"
+black = ">=23.1,<25.0"
 
 [build-system]
 requires = ["poetry-core"]
