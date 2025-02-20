@@ -17,10 +17,10 @@ import pathlib
 import functools
 import os
 import re
-from typing import Callable
+from typing import Callable, TypeAlias
 
 
-FilterFunction = Callable[[os.DirEntry], bool]
+FilterFunction: TypeAlias = Callable[[os.DirEntry], bool]
 
 
 class Filter(object):
