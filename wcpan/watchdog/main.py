@@ -8,13 +8,13 @@ from .filters import create_default_filter, matches_glob
 
 
 def main(args: list[str] | None = None) -> int:
-    return asyncio.run(amain(args))
-
-
-async def amain(args: list[str] | None = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
+    return asyncio.run(amain(args))
+
+
+async def amain(args: list[str]) -> int:
     kwargs, rest = parse_args(args)
     filter_ = create_filter(kwargs)
     is_quiet = kwargs.quiet
