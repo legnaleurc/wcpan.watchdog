@@ -9,6 +9,9 @@ authors = [
 ]
 dynamic = ["requires-python", "dependencies", "classifiers"]
 
+[project.scripts]
+"wcpan.watchdog" = "wcpan.watchdog.main:main"
+
 [tool.poetry]
 requires-poetry = "^2.1"
 packages = [{include = "wcpan"}]
