@@ -1,6 +1,6 @@
 RM := rm -rf
 PYTHON := poetry run -- python3
-BLACK := poetry run -- black
+RUFF := poetry run -- ruff
 
 PKG_FILES := pyproject.toml
 PKG_LOCK := poetry.lock
@@ -12,10 +12,12 @@ ENV_LOCK := $(ENV_DIR)/pyvenv.cfg
 all: venv
 
 format: venv
-	$(BLACK) tests wcpan
+	$(RUFF) check --fix
+	$(RUFF) format
 
 lint: venv
-	$(BLACK) --check tests wcpan
+	$(RUFF) check
+	$(RUFF) format --check
 
 clean:
 	$(RM) ./dist ./build ./*.egg-info
