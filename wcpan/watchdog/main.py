@@ -1,10 +1,10 @@
-import asyncio
 import argparse
+import asyncio
 import signal
 import sys
 
-from .watcher import WatcherContext
 from .filters import create_default_filter, matches_glob
+from .watcher import WatcherContext
 
 
 def main(args: list[str] | None = None) -> int:

@@ -12,8 +12,8 @@ from contextlib import AsyncExitStack
 from functools import partial
 from typing import Awaitable, Callable, Protocol, TypeVar
 
-from .walker import ChangeEntry, Walker
 from .filters import Filter, create_default_filter
+from .walker import ChangeEntry, Walker
 
 
 T = TypeVar("T")

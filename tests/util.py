@@ -2,8 +2,8 @@ import contextlib
 import os
 import os.path as op
 import pathlib
-from typing import Text, Iterator
 import unittest.mock as utm
+from typing import Iterator, Text
 
 
 def create_entry(path: Text, is_dir: bool) -> os.DirEntry:

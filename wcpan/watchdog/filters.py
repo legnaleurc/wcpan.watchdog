@@ -13,9 +13,9 @@ __all__ = (
 )
 
 
-import pathlib
 import functools
 import os
+import pathlib
 import re
 from typing import Callable, TypeAlias
 
